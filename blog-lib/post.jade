@@ -9,13 +9,29 @@ ul.breadcrumb
 .page-header
 	h1= post.title
 		= " "
-		small
-			g:plusone(href="http://sokra.github.com/blog/#"+hash)
-			= " "
-			a.twitter-share-button(
-				href="http://twitter.com/share", 
-				data-text="sokra's blog: " + post.title,
-				data-url="http://sokra.github.com/blog/#"+hash)
+		g:plusone(href="http://sokra.github.com/blog/#"+hash)
+		= " "
+		a.twitter-share-button(
+			href="http://twitter.com/share",
+			data-text="sokra's blog: " + post.title,
+			data-url="http://sokra.github.com/blog/#"+hash)
+		= " "
+		- var feedback =
+		- "https://github.com/sokra/sokra.github.com/"+
+		- "issues/new?title=Feedback&labels[]=";
+		a.btn.btn-info(
+			href=feedback + encodeURIComponent(post.title))
+			i.icon-thumbs-up.icon-white
+			i.icon-thumbs-down.icon-white
+			|  Feedback
+		= " "
+		- var edit =
+		- "https://github.com/sokra/sokra.github.com/"+
+		- "edit/master/blog-posts/";
+		a.btn(
+			href=edit + encodeURIComponent(hash) + ".yam")
+			i.icon-edit
+			|  Propose an edit
 each content in post.contents
 	div!= content
 .content
