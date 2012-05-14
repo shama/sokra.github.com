@@ -1,4 +1,4 @@
-[post title="My new blog"]
+[post title="My new blog" tags="webpack github bootstrap javascript blog coding"]
 
 Hello,
 
@@ -60,3 +60,7 @@ module.exports = function(post) {
 	return result.join("");
 }
 ```
+
+## Future tasks
+
+I want to integrate tags for each post and show them in the list. This should be a easy task as any meta data can be integrated into the yamyam markdown.
