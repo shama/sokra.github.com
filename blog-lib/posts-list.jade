@@ -1,0 +1,14 @@
+ul.breadcrumb
+	li
+		a(href="#") Home
+		span.divider= "/"
+	li.active Posts
+each name in names
+	div.well
+		- var post = posts(name);
+		a(href="#"+nameToHash(name))
+			h1= post.title;
+		each content in post.contents
+			div!= content
+		p: a(href="#"+nameToHash(name)) Read more...
+			

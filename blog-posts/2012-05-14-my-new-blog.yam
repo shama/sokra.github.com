@@ -1,0 +1,62 @@
+[post title="My new blog"]
+
+Hello,
+
+I am proud to introduce my new blog.
+
+It's totally build on [webpack](https://github.com/sokra/modules-webpack) and posts are compiled with [YamYam](https://github.com/sokra/YamYam) markdown.
+
+Here are more details about how it works: (and you can see the [source](https://github.com/sokra/sokra.github.com))
+
+[more]
+
+I wanted to host by blog on Github, so one restriction was that no server side components can exist. Using Jekyll is too standard and it should be a javascript-based page. And I need a usecase for [webpack](https://github.com/sokra/modules-webpack) and [YamYam](https://github.com/sokra/YamYam).
+
+The blog's code is really simple: 
+It just creates a `require.context` of the posts in a specific folder. The posts are preprocessed by a own loader. The loader emits meta info of each post and offers a method to load the whole content of the post which `require.ensure`. So webpack's Code Splitting do the work.
+The main code enumerates all files in the context and build the view from a few `jade`-templates. [jQuery hashchange](http://benalman.com/projects/jquery-hashchange-plugin/) listens for the navigation, and bootstrap make the styling.
+
+## Some code
+
+Here is an example of a post file:
+
+`2012-05-14-hash-for-the-post-in-url.yam`
+
+```
+[post title="The title of the post]
+
+Some content.
+
+[more]
+
+Some details.
+```
+
+This is processed by a own loader which extracts info from the file and put it into a JSON structure. A second loader generates code that contains a part of the meta data and a function which loads the remaining content via `require.ensure`. (The val loader is only needed to get the value of the javascript code)
+
+``` javascript
+// in main code:
+var posts = require.context("./bundlePost!./yamyam!../blog-posts");
+var postNames = posts.keys().slice(0).sort().reverse();
+```
+
+### The `bundlePost.loader.js` loader
+
+It is so small, I can include the complete file:
+
+``` javascript
+module.exports = function(post) {
+	var loaderSign = this.request.indexOf("!");
+	var requireRequest = this.request.substr(loaderSign);
+	var post = this.exec(post);
+	post.contents.length = 1; // remove nearly all content
+	var result = [
+		"module.exports = ", JSON.stringify(post), ";\n",
+		"module.exports.get = function(cb) {\n",
+		"	require.ensure([], function(require) {\n",
+		"		cb(require(", JSON.stringify(requireRequest), "));\n",
+		"	});\n",
+		"};"];
+	return result.join("");
+}
+```
