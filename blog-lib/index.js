@@ -37,6 +37,7 @@ $(function() {
 					names: postNames,
 					nameToHash: postNameToHash
 				}));
+			document.title = "sokra's blog - posts";
 			break;
 		default:
 			var post;
@@ -46,6 +47,7 @@ $(function() {
 				post = posts(postNames[0]);
 				hash = postNameToHash(postNames[0]);
 			}
+			document.title = "sokra's blog - " + post.title;
 			var page = $(".page").html(require("./post.jade")({
 				post: post,
 				hash: hash
