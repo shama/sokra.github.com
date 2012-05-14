@@ -1,0 +1,23 @@
+ul.breadcrumb
+	li
+		a(href="#") Home
+		span.divider= "/"
+	li
+		a(href="#list") Posts
+		span.divider= "/"
+	li.active= post.title
+.page-header
+	h1= post.title
+		= " "
+		small
+			g:plusone(href="http://sokra.github.com/blog/#"+hash)
+			= " "
+			a.twitter-share-button(
+				href="http://twitter.com/share", 
+				data-text="sokra's blog: " + post.title,
+				data-url="http://sokra.github.com/blog/#"+hash)
+each content in post.contents
+	div!= content
+.content
+	.progress.progress-striped.active
+		.bar(style="width:100%")

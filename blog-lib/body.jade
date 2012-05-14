@@ -1,0 +1,37 @@
+- require("mybootstrap");
+- require("./body.css");
+.navbar.navbar-fixed-top
+	.navbar-inner
+		.container
+			a.btn.btn-navbar(data-toggle="collapse", data-target=".nav-collapse")
+				span.icon-bar
+				span.icon-bar
+				span.icon-bar
+			a.brand(href="#") sokra's blog
+			.nav-collapse
+				ul.nav
+					li: a(href="#") Home
+					li.dropdown
+						a.dropdown-toggle(
+							href="#list", data-toggle="dropdown",
+							data-hash="list")
+							| Posts
+							b.caret
+						ul.dropdown-menu.posts-nav
+.container-fluid
+	.row-fluid
+		.span2
+			.page-header
+				h1 sokra's blog
+					= " "
+					small
+						g:plusone(href="http://sokra.github.com/blog/")
+						= " "
+						a.twitter-share-button(
+							href="http://twitter.com/share", 
+							data-text="sokra's blog",
+							data-url="http://sokra.github.com/blog/")
+			ul.nav.nav-stacked.nav-pills.posts-sidebar
+				li(data-hash="list")
+					a(href="#list") All posts
+		.span10.page
