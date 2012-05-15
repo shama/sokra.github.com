@@ -10,6 +10,10 @@ function postNameToHash(name) {
 	return name.slice(2, name.length - 4);
 }
 
+function hashToDate(hash) {
+	return hash.substring(0, 10);
+}
+
 $(function() {
 	// load html
 	$("body").html(require("./body.jade")());
@@ -50,7 +54,8 @@ $(function() {
 			document.title = "sokra's blog - " + post.title;
 			var page = $(".page").html(require("./post.jade")({
 				post: post,
-				hash: hash
+				hash: hash,
+				hashToDate: hashToDate
 			}));
 			page.find("pre").each(function() {
 				hljs.highlightBlock(this);

@@ -7,15 +7,20 @@ ul.breadcrumb
 		span.divider= "/"
 	li.active= post.title
 .page-header
-	h1= post.title
+	div(style="float: right;")
 		= " "
 		g:plusone(href="http://sokra.github.com/blog/#"+hash)
-		= " "
+		br
 		a.twitter-share-button(
 			href="http://twitter.com/share",
 			data-text="sokra's blog: " + post.title,
 			data-url="http://sokra.github.com/blog/#"+hash)
+	h1
+		small: nobr= hashToDate(hash)
 		= " "
+		= post.title
+		= " "
+	div(style="padding-top:5px")
 		- var feedback =
 		- "https://github.com/sokra/sokra.github.com/"+
 		- "issues/new?title=Feedback&labels[]=";
