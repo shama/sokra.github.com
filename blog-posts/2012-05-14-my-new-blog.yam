@@ -61,6 +61,10 @@ module.exports = function(post) {
 }
 ```
 
+## Complete source
+
+[on github](https://github.com/sokra/sokra.github.com/)
+
 ## Future tasks
 
 I want to integrate tags for each post and show them in the list. This should be a easy task as any meta data can be integrated into the yamyam markdown.
