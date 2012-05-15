@@ -4,21 +4,21 @@
 
 ### I. Cache the resources
 
-To leverage caching the best your resources should be cached forever. But this results in a problem, you cannot exchange the resources anymore. So you (or the compiler) name the resources so that their name contains a hash of it's content. This introduce a bit more complexity: You (or the compile) have to update all references of the resource if you want to change it.
+To leverage caching the best your resources should be cached forever. But this results in the problem, that you cannot exchange the resources anymore. So you (or the compiler) name the resources so that their name contains a hash of it's content. This introduce a bit more complexity: You (or the compiler) have to update all references of the resource if you want to change it.
 
 ### II. Transfer only few files
 
 [more]
 
-Because the browser limits the connection count to one server and each file has a http overhead, transfering many files (from a single server) is bad. Therefore web sites concat files. This process is really easy for files of the same type (css+css, js+js, not so easy but possible img+img). Approaches for different file type are avalible but more complex (png+css DataUrl, css+js small script).
+Because the browser limits the connection count to one server and each file has a http overhead, transfering many files (from a single server) is bad. Therefore web sites concat files. This process is really easy for files of the same type (css+css, js+js, not so easy but possible img+img). Approaches for different file type are avalible but more complex (img+css DataUrl, css+js small script).
 
 ### III. Transfer only required files
 
-Most web app consist of multiple pages which are alltogether visible. Some parts of the resources may not be required for the current page. Downloading only the required parts make the first page faster visible and is more attractive of the user. *How likes a web app, which takes long time to load?* Pages which are likely to be used next, can be perfetched.
+Most web app consist of multiple pages which are never all visible at the same time. Some parts of the resources may not be required for the current page. Downloading only the required parts make the first page faster visible and is so more attractive of the user. *How likes a web app, which takes long time to load?* Pages which are likely to be used next, can be prefetched by the developer.
 
 ### IV. Compile before serving
 
-If you use a template language to generate parts of your page, you should compile them before serving them to the browser. Two reasons for this: Compiling is a expensive process. It could take some time on weak clients. The compiler may have a bigger size, than the "runtime" needed for executing the compiled templates. It also easier to minimize compiled templates if they are javascript code. The same is true for alternative languages like `coffeescript` or `less`.
+If you use a template language (i.e. `jade`) to generate parts of your page, you should compile them before serving them to the client. Three reasons for this: Compiling is a expensive process. It could take some time on weak clients. The compiler may have a bigger size, than the "runtime" needed for executing the compiled templates. It also easier to minimize compiled templates if they are javascript code. The same is true for alternative languages like `coffeescript` or `less`.
 
 ### V. Minimize files
 
@@ -26,9 +26,9 @@ This saves size. There are good minimizer avalible for many common file types (c
 
 ## Why another CommonJs packager?
 
-Existing CommonJs packager did only a part of the points above. The devoloper have to take core of the other points.
+Existing CommonJs packager did only a part of the points above. The devoloper have to take care of the other points.
 
-So I developed [`webpack`](https://github.com/sokra/modules-webpack) which should take care of all points above.
+So I developed [webpack](https://github.com/sokra/modules-webpack) which should take care of all points above.
 
 ## How webpack support the points
 
@@ -36,7 +36,7 @@ Getting **point I** is really easy: The `webpack` simply add a hash to all outpu
 
 Getting **point II** is more complex. Like any other packager it can bundle all javascript sources to a single file. But this may not be enougth. There are still stylesheets and images remaining. Stylesheets can be merged into the javascript as a string and applied to the document with a few lines of code. Images can be stored as DataUrl in the stylesheet or the javascript code, but this do not work for all browsers (so it is disabled by default).
 
-Regarding **point III** there is a conflict with point II. If all stuff is in a single file, there is a lot of unrequired stuff transferred to the client. On big web app this would result in a long initial loading time. `webpack` solves this by providing a feature named "Code Splitting" (inspired by [GWT](http://code.google.com/p/google-web-toolkit/wiki/CodeSplitting)) which splits your single file at by the developer defined split points into multiple files (chunks). If the developer applies a good splitting his web app only have to download the required stuff and have a short loading time. Each chunk can be cached seperate.
+Regarding **point III** there is a conflict with point II. If all stuff is in a single file, there is a lot of unrequired stuff transferred to the client. On big web app this would result in a long initial loading time. `webpack` solves this by providing a feature named "Code Splitting" (inspired by [GWT](http://code.google.com/p/google-web-toolkit/wiki/CodeSplitting)) which splits your single file at by the developer defined split points into multiple files (chunks). If the developer applies a good splitting, his web app only have to download the required stuff and have a short loading time. Each chunk can be cached seperatly.
 
 **Point IV** brings `webpack` to the point that it will allow "loader" or "preprocessors" to preprocess a file. A "loader" takes some input (in example a `jade`-template) and do something with it and emits javascript code after that. Multiple loaders can be piped to support complexer operations. A developer can write own loaders which allow to generate javascript code while compiling.
 
@@ -45,7 +45,7 @@ Regarding **point III** there is a conflict with point II. If all stuff is in a 
 ## Additional features
 
 * debugging support with `// @sourceURL=`
-* detailed info abould the happing code splitting
+* detailed info about code splitting
 * raw, json, jade, coffee, css, less loaders out of the box and bound to file extensions
 * bundle loader, which creates a chunk from the file
 * file loader, which emits a seperate file to the output and returns the url
